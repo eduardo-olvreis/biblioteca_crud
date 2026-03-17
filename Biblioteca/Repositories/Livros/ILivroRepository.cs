@@ -4,10 +4,10 @@ namespace Biblioteca.Repositories.Livros
 {
     public interface ILivroRepository
     {
-        Task<Livro> ObterPorId(int id);
-        Task<List<Livro>> ObterTodos();
-        Task<Livro> CriarLivro(Livro livro);
-        Task<Livro> AtualizarLivro(Livro livro);
-        Task<bool> DeletarLivro(int id);
+        Task<Livro ?> ObterPorIdAsync(int id);
+        Task<List<Livro>> ObterTodosAsync();
+        Task<Livro> CriarLivroAsync(Livro livro);
+        Task<Livro> AtualizarLivroAsync(Livro livro);
+        Task<bool> DeletarLivroAsync(int id);
     }
 }
