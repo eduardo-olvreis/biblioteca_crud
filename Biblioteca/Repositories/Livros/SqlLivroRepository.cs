@@ -12,7 +12,7 @@ namespace Biblioteca.Repositories.Livros
             _context = context;
         }
 
-        public async Task<Livro> ObterPorIdAsync(int id)
+        public async Task<Livro?> ObterPorIdAsync(int id)
         {
             return await _context.Livros.AsNoTracking().Include(a => a.Autor).FirstOrDefaultAsync(l => l.Id == id);
         }

@@ -12,7 +12,7 @@ namespace Biblioteca.Repositories.Autores
             _context = context;
         }
 
-        public async Task<Autor> ObterPorIdAsync(int id)
+        public async Task<Autor?> ObterPorIdAsync(int id)
         {
             return await _context.Autores.AsNoTracking().Include(l => l.Livros).FirstOrDefaultAsync(a => a.Id == id);
         }
@@ -37,7 +37,7 @@ namespace Biblioteca.Repositories.Autores
             return autor;
         }
 
-        public async Task<bool> DeletarAutor(int id)
+        public async Task<bool> DeletarAutorAsync(int id)
         {
             Autor autor = await ObterPorIdAsync(id);
             if (autor == null) return false;

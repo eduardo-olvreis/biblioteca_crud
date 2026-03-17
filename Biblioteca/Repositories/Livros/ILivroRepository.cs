@@ -4,7 +4,7 @@ namespace Biblioteca.Repositories.Livros
 {
     public interface ILivroRepository
     {
-        Task<Livro ?> ObterPorIdAsync(int id);
+        Task<Livro?> ObterPorIdAsync(int id);
         Task<List<Livro>> ObterTodosAsync();
         Task<Livro> CriarLivroAsync(Livro livro);
         Task<Livro> AtualizarLivroAsync(Livro livro);
