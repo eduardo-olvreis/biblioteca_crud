@@ -36,9 +36,9 @@ namespace Biblioteca.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LivroResponseDto>>> ObterTodosAsync()
+        public async Task<ActionResult<IEnumerable<LivroResponseDto>>> ObterTodosAsync([FromQuery] string? titulo, [FromQuery] int? autorId)
         {
-            var livros = await _repositorio.ObterTodosAsync();
+            var livros = await _repositorio.ObterTodosAsync(titulo, autorId);
             var response = livros.Select(l => new LivroResponseDto
             {
                 Id = l.Id,

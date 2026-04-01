@@ -17,9 +17,18 @@ namespace Biblioteca.Repositories.Livros
             return await _context.Livros.AsNoTracking().Include(a => a.Autor).FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<List<Livro>> ObterTodosAsync()
+        public async Task<List<Livro>> ObterTodosAsync(string? titulo, int? autorId)
         {
-            return await _context.Livros.AsNoTracking().Include(a => a.Autor).ToListAsync();
+            var query = _context.Livros.AsNoTracking().Include(l => l.Autor).AsQueryable();
+            if(!string.IsNullOrWhiteSpace(titulo))
+            {
+                query = query.Where(l => l.Titulo.Contains(titulo));
+            }
+            if(autorId != null)
+            {
+                query = query.Where(l => l.AutorId == autorId);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<Livro> CriarLivroAsync(Livro livro)
