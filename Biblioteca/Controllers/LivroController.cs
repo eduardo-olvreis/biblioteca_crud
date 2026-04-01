@@ -30,7 +30,7 @@ namespace Biblioteca.Controllers
                 Ano = livro.Ano,
                 Edicao = livro.Edicao,
                 NumeroPaginas = livro.NumeroPaginas,
-                NomeAutor = livro.Autor.Nome
+                NomeAutor = livro.Autor?.Nome ?? "Autor não informado"
             };
             return Ok(response);
         }
@@ -39,7 +39,6 @@ namespace Biblioteca.Controllers
         public async Task<ActionResult<IEnumerable<LivroResponseDto>>> ObterTodosAsync()
         {
             var livros = await _repositorio.ObterTodosAsync();
-            if (livros.Count == 0) return NotFound("Nenhum livro encontrado.");
             var response = livros.Select(l => new LivroResponseDto
             {
                 Id = l.Id,
@@ -47,7 +46,7 @@ namespace Biblioteca.Controllers
                 Ano = l.Ano,
                 Edicao = l.Edicao,
                 NumeroPaginas = l.NumeroPaginas,
-                NomeAutor = l.Autor.Nome
+                NomeAutor = l.Autor?.Nome ?? "Autor não informado"
             }).ToList();
             return Ok(response);
         }
@@ -75,14 +74,14 @@ namespace Biblioteca.Controllers
                 NumeroPaginas = livro.NumeroPaginas,
                 NomeAutor = encontrouAutor.Nome
             };
-            return Ok(response);
+            return CreatedAtAction(nameof(ObterPorIdAsync), new { id = response.Id }, response);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<LivroResponseDto>> AtualizarLivroAsync(int id, [FromBody] LivroCreateDto livroDto)
         {
             var livroEncontrado = await _repositorio.ObterPorIdAsync(id);
-            if (livroEncontrado == null) return NotFound("Nenhum livro foi encontrado.");
+            if (livroEncontrado == null) return NotFound("Nenhum livro encontrado.");
             livroEncontrado.Titulo = livroDto.Titulo;
             livroEncontrado.Ano = livroDto.Ano;
             livroEncontrado.Edicao = livroDto.Edicao;
@@ -90,7 +89,7 @@ namespace Biblioteca.Controllers
             livroEncontrado.AutorId = livroDto.AutorId;
             livroEncontrado.Autor = null;
             var autorEncontrado = await _autorRepository.ObterPorIdAsync(livroEncontrado.AutorId);
-            if (autorEncontrado == null) return NotFound("Nenhum autor foi encontrado.");
+            if (autorEncontrado == null) return BadRequest("Autor informado não existe.");
             await _repositorio.AtualizarLivroAsync(livroEncontrado);
             var response = new LivroResponseDto
             {
@@ -109,7 +108,7 @@ namespace Biblioteca.Controllers
         {
             var livro = await _repositorio.DeletarLivroAsync(id);
             if (livro == false) return NotFound("Livro não encontrado.");
-            return Ok();
+            return NoContent();
         }
     }
 }

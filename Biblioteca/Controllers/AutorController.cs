@@ -107,10 +107,9 @@ namespace Biblioteca.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletarAutorAsync(int id)
         {
-            var autor = await _repositorio.ObterPorIdAsync(id);
-            if (autor == null) return NotFound("Autor não encontrado.");
-            await _repositorio.DeletarAutorAsync(id);
-            return Ok(autor);
+            var autor = await _repositorio.DeletarAutorAsync(id);
+            if (autor == false) return NotFound("Autor não encontrado.");
+            return NoContent();
         }
     }
 }
