@@ -8,7 +8,7 @@ namespace Biblioteca.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Campo 'Nome' não pode ser vazio.")]
+        [Required(ErrorMessage = "Campo 'Título' não pode ser vazio.")]
         [StringLength(50)]
         public string Titulo { get; set; }
 
