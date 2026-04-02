@@ -11,8 +11,8 @@ namespace Biblioteca.DTOs.Usuarios
         [EmailAddress(ErrorMessage = "Formato de Email inválido")]
         public string Email { get; set; }
 
-        [Required]
-        [MinLength(8)]
+        [Required(ErrorMessage = "Campo 'Senha' não pode ser vazio")]
+        [MinLength(8, ErrorMessage = "Senha deve ter pelo menos 8 caracteres")]
         public string Senha { get; set; }
     }
 }
