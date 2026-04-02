@@ -36,9 +36,10 @@ namespace Biblioteca.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LivroResponseDto>>> ObterTodosAsync([FromQuery] string? titulo, [FromQuery] int? autorId)
+        public async Task<ActionResult<IEnumerable<LivroResponseDto>>> ObterTodosAsync([FromQuery] string? titulo, [FromQuery] int? autorId, [FromQuery] int? ano, [FromQuery] int pagina = 1, [FromQuery] int quantidade = 10)
         {
-            var livros = await _repositorio.ObterTodosAsync(titulo, autorId);
+            if(quantidade <= 0 || pagina <= 0) { return BadRequest("O número de páginas e a quantidade não podem ser menor igual a 0"); };
+            var livros = await _repositorio.ObterTodosAsync(titulo, autorId, ano, pagina, quantidade);
             var response = livros.Select(l => new LivroResponseDto
             {
                 Id = l.Id,

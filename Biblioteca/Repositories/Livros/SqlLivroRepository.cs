@@ -17,7 +17,7 @@ namespace Biblioteca.Repositories.Livros
             return await _context.Livros.AsNoTracking().Include(a => a.Autor).FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<List<Livro>> ObterTodosAsync(string? titulo, int? autorId)
+        public async Task<List<Livro>> ObterTodosAsync(string? titulo, int? autorId, int? ano, int pagina, int quantidade)
         {
             var query = _context.Livros.AsNoTracking().Include(l => l.Autor).AsQueryable();
             if(!string.IsNullOrWhiteSpace(titulo))
@@ -28,7 +28,11 @@ namespace Biblioteca.Repositories.Livros
             {
                 query = query.Where(l => l.AutorId == autorId);
             }
-            return await query.ToListAsync();
+            if(ano != null)
+            {
+                query = query.Where(l => l.Ano == ano);
+            }
+            return await query.Skip((pagina - 1) * quantidade).Take(quantidade).ToListAsync();
         }
 
         public async Task<Livro> CriarLivroAsync(Livro livro)
