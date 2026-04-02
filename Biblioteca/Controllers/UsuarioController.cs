@@ -35,5 +35,15 @@ namespace Biblioteca.Controllers
             };
             return Ok(response);
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<Usuario>> RealizarLogin(UsuarioLoginDto loginDto)
+        {
+            var usuario = await _repositorio.ObterPorEmailAsync(loginDto.Email);
+            if(usuario == null) { return Unauthorized("Email ou senha inválidos."); };
+            bool senhaCorreta = BCrypt.Net.BCrypt.Verify(loginDto.Senha, usuario?.SenhaHash);
+            if(senhaCorreta == false) { return Unauthorized("Email ou senha inválidos."); };
+            return Ok("Login realizado com sucesso!");
+        }
     }
 }
