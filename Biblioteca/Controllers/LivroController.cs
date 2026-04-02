@@ -40,16 +40,7 @@ namespace Biblioteca.Controllers
         {
             if(quantidade <= 0 || pagina <= 0) { return BadRequest("O número de páginas e a quantidade não podem ser menor igual a 0"); };
             var livros = await _repositorio.ObterTodosAsync(titulo, autorId, ano, pagina, quantidade);
-            var response = livros.Select(l => new LivroResponseDto
-            {
-                Id = l.Id,
-                Titulo = l.Titulo,
-                Ano = l.Ano,
-                Edicao = l.Edicao,
-                NumeroPaginas = l.NumeroPaginas,
-                NomeAutor = l.Autor?.Nome ?? "Autor não informado"
-            }).ToList();
-            return Ok(response);
+            return Ok(livros);
         }
 
         [HttpPost]
