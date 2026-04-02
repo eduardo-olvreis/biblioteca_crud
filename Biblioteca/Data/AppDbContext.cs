@@ -8,5 +8,6 @@ namespace Biblioteca.Data
         public AppDbContext(DbContextOptions options) : base(options) { }
         public DbSet<Autor> Autores { get; set; }
         public DbSet<Livro> Livros {  get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
     }
 }
